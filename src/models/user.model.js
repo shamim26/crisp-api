@@ -26,6 +26,38 @@ const userSchema = new mongoose.Schema(
       required: [true, "Password is required"],
       minlength: [8, "Password must be at least 8 characters long"],
     },
+    phone: {
+      type: String,
+      validate: {
+        validator: function (val) {
+          return /(^(\+88|0088)?(01){1}[3456789]{1}(\d){8})$/.test(val);
+        },
+        message: (props) =>
+          `${props.value} is not a valid Bangladeshi phone number!`,
+      },
+    },
+    address: {
+      street: {
+        type: String,
+        trim: true,
+      },
+      city: {
+        type: String,
+        trim: true,
+      },
+      state: {
+        type: String,
+        trim: true,
+      },
+      country: {
+        type: String,
+        trim: true,
+      },
+      zipCode: {
+        type: String,
+        trim: true,
+      },
+    },
     role: {
       type: String,
       default: "user",
