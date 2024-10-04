@@ -24,7 +24,7 @@ const registerUser = asyncHandler(async (req, res) => {
 
   const user = await User.create(newUser);
 
-  const token = createJwt({ user }, jwtSecret, "1d");
+  const token = createJwt({ id: user._id }, jwtSecret, "1d");
 
   res.cookie("jwt", token, {
     httpOnly: true,
@@ -37,7 +37,11 @@ const registerUser = asyncHandler(async (req, res) => {
     statusCode: 200,
     message: "Registered Successfully.",
     payload: {
-      user,
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+      },
     },
   });
 });

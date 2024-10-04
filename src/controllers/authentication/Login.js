@@ -33,7 +33,7 @@ const loginUser = asyncHandler(async (req, res) => {
     });
   }
 
-  const token = createJwt({ userId: user._id }, jwtSecret, "1d");
+  const token = createJwt({ id: user._id }, jwtSecret, "1d");
 
   res.cookie("jwt", token, {
     httpOnly: true,
@@ -46,7 +46,11 @@ const loginUser = asyncHandler(async (req, res) => {
     statusCode: 200,
     message: "login successful",
     payload: {
-      user,
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+      },
     },
   });
 });
