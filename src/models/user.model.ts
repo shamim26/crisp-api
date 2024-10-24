@@ -1,5 +1,5 @@
-const mongoose = require("mongoose");
-const bcrypt = require("bcrypt");
+import mongoose from "mongoose";
+import bcrypt from "bcrypt";
 
 const userSchema = new mongoose.Schema(
   {
@@ -15,7 +15,7 @@ const userSchema = new mongoose.Schema(
       lowercase: true,
       trim: true,
       validate: {
-        validator: function (val) {
+        validator: function (val: string) {
           return /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/.test(val);
         },
         message: (props) => `${props.value} is not a valid email address!`,
@@ -29,10 +29,10 @@ const userSchema = new mongoose.Schema(
     phone: {
       type: String,
       validate: {
-        validator: function (val) {
+        validator: function (val: string) {
           return /(^(\+88|0088)?(01){1}[3456789]{1}(\d){8})$/.test(val);
         },
-        message: (props) =>
+        message: (props: any) =>
           `${props.value} is not a valid Bangladeshi phone number!`,
       },
     },
@@ -84,4 +84,4 @@ userSchema.pre("save", async function (next) {
 
 const User = mongoose.model("User", userSchema);
 
-module.exports = User;
+export default User;

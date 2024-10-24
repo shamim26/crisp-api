@@ -1,5 +1,5 @@
-const express = require("express");
-const { successResponse } = require("../controllers/responseController");
+import express from "express";
+import { successResponse } from "../controllers/responseController";
 
 const rootRouter = express.Router();
 
@@ -17,4 +17,4 @@ rootRouter.get("/", (req, res) => {
   });
 });
 
-module.exports = rootRouter;
+export default rootRouter;

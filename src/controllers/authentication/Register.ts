@@ -1,8 +1,8 @@
-const { successResponse, errorResponse } = require("../responseController");
-const User = require("../../models/user.model");
-const { createJwt } = require("../../utils/jwt");
-const { jwtSecret } = require("../../constant");
-const asyncHandler = require("../../utils/asyncHandler");
+import { successResponse, errorResponse } from "../responseController";
+import User from "../../models/user.model";
+import { createJwt } from "../../utils/jwt";
+import { jwtSecret } from "../../constant";
+import asyncHandler from "../../utils/asyncHandler";
 
 const registerUser = asyncHandler(async (req, res) => {
   const { name, email, password } = req.body;
@@ -46,4 +46,4 @@ const registerUser = asyncHandler(async (req, res) => {
   });
 });
 
-module.exports = registerUser;
+export default registerUser;

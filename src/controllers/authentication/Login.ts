@@ -1,9 +1,9 @@
-const User = require("../../models/user.model");
-const { createJwt } = require("../../utils/jwt");
-const { successResponse, errorResponse } = require("../responseController");
-const bcrypt = require("bcrypt");
-const asyncHandler = require("../../utils/asyncHandler");
-const { jwtSecret } = require("../../constant");
+import User from "../../models/user.model";
+import { createJwt } from "../../utils/jwt";
+import { successResponse, errorResponse } from "../responseController";
+import bcrypt from "bcrypt";
+import asyncHandler from "../../utils/asyncHandler";
+import { jwtSecret } from "../../constant";
 
 const loginUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
@@ -55,4 +55,4 @@ const loginUser = asyncHandler(async (req, res) => {
   });
 });
 
-module.exports = loginUser;
+export default loginUser;

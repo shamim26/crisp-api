@@ -1,6 +1,6 @@
-const User = require("../../models/user.model");
-const asyncHandler = require("../../utils/asyncHandler");
-const { errorResponse, successResponse } = require("../responseController");
+import User from "../../models/user.model";
+import asyncHandler from "../../utils/asyncHandler";
+import { errorResponse, successResponse } from "../responseController";
 
 const updateUser = asyncHandler(async (req, res) => {
   const { id } = req.params;
@@ -26,4 +26,4 @@ const updateUser = asyncHandler(async (req, res) => {
   });
 });
 
-module.exports = updateUser;
+export default updateUser;

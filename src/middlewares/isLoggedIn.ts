@@ -1,6 +1,6 @@
-const { verifyJwt } = require("../utils/jwt");
-const { errorResponse } = require("../controllers/responseController");
-const User = require("../models/user.model");
+import { verifyJwt } from "../utils/jwt";
+import { errorResponse } from "../controllers/responseController";
+import User from "../models/user.model";
 
 const isLoggedIn = async (req, res, next) => {
   try {
@@ -45,4 +45,4 @@ const isLoggedIn = async (req, res, next) => {
   }
 };
 
-module.exports = isLoggedIn;
+export default isLoggedIn;

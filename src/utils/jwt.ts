@@ -1,5 +1,5 @@
-const jwt = require("jsonwebtoken");
-const { jwtSecret } = require("../constant");
+import jwt from "jsonwebtoken";
+import { jwtSecret } from "../constant";
 
 const createJwt = (payload, secret, expiresIn = "30m") => {
   try {
@@ -14,7 +14,7 @@ const createJwt = (payload, secret, expiresIn = "30m") => {
   }
 };
 
-const verifyJwt = (token, secret = jwtSecret) => {
+const verifyJwt = (token: string, secret = jwtSecret) => {
   try {
     if (!token || typeof token !== "string") {
       throw new Error("Invalid token. Must be a non-empty string.");
@@ -27,7 +27,4 @@ const verifyJwt = (token, secret = jwtSecret) => {
   }
 };
 
-module.exports = {
-  createJwt,
-  verifyJwt,
-};
+export { createJwt, verifyJwt };
