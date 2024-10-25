@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { ValidatorProps } from "mongoose";
 
 const productSchema = new mongoose.Schema(
   {
@@ -14,16 +14,17 @@ const productSchema = new mongoose.Schema(
       type: String,
       required: [true, "Featured image is required"],
       validate: {
-        validator: function (v) {
+        validator: function (v: string) {
           return /^https?:\/\/.+\.(jpg|jpeg|png|gif)$/i.test(v);
         },
-        message: (props) => `${props.value} is not a valid image URL!`,
+        message: (props: ValidatorProps) =>
+          `${props.value} is not a valid image URL!`,
       },
     },
     images: {
       type: [String],
       validate: {
-        validator: function (v) {
+        validator: function (v: string[]) {
           return v.every((url) =>
             /^https?:\/\/.+\.(jpg|jpeg|png|gif)$/i.test(url)
           );

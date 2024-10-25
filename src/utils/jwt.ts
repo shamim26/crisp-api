@@ -1,8 +1,7 @@
-import jwt from "jsonwebtoken";
+import jwt, { JwtPayload } from "jsonwebtoken";
 import { jwtSecret } from "../constant";
 
-
-const createJwt = (payload, secret, expiresIn = "30m") => {
+const createJwt = (payload: {}, secret: string, expiresIn = "30m") => {
   try {
     if (!payload || typeof payload !== "object") {
       throw new Error("Invalid payload. Must be a non-empty object.");
@@ -21,7 +20,7 @@ const verifyJwt = (token: string, secret = jwtSecret) => {
       throw new Error("Invalid token. Must be a non-empty string.");
     }
     const decoded = jwt.verify(token, secret);
-    return decoded;
+    return decoded as JwtPayload;
   } catch (error) {
     console.error("Error verifying JWT:", error);
     return null;

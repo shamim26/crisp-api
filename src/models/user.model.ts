@@ -1,7 +1,27 @@
-import mongoose from "mongoose";
+import mongoose, { CallbackError, ValidatorProps } from "mongoose";
 import bcrypt from "bcrypt";
 
-const userSchema = new mongoose.Schema(
+interface Address {
+  street?: string;
+  city?: string;
+  state?: string;
+  country?: string;
+  zipCode?: string;
+}
+
+export interface UserDocument {
+  name: string;
+  email: string;
+  password: string;
+  phone?: string;
+  address?: Address;
+  role: string;
+  isBanned: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+const userSchema = new mongoose.Schema<UserDocument>(
   {
     name: {
       type: String,
@@ -32,7 +52,7 @@ const userSchema = new mongoose.Schema(
         validator: function (val: string) {
           return /(^(\+88|0088)?(01){1}[3456789]{1}(\d){8})$/.test(val);
         },
-        message: (props) =>
+        message: (props: ValidatorProps) =>
           `${props.value} is not a valid Bangladeshi phone number!`,
       },
     },
@@ -72,16 +92,16 @@ const userSchema = new mongoose.Schema(
 );
 
 // password hashing
-userSchema.pre("save", async function (next) {
+userSchema.pre<UserDocument>("save", async function (next) {
   try {
     const salt = await bcrypt.genSalt(10);
     this.password = await bcrypt.hash(this.password, salt);
     return next();
   } catch (error) {
-    return next(error);
+    return next(error as CallbackError);
   }
 });
 
-const User = mongoose.model("User", userSchema);
+const User = mongoose.model<UserDocument>("User", userSchema);
 
 export default User;
