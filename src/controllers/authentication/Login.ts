@@ -4,8 +4,9 @@ import { successResponse, errorResponse } from "../responseController";
 import bcrypt from "bcrypt";
 import asyncHandler from "../../utils/asyncHandler";
 import { jwtSecret } from "../../constant";
+import { Request, Response } from "express";
 
-const loginUser = asyncHandler(async (req, res) => {
+const loginUser = asyncHandler(async (req: Request, res: Response) => {
   const { email, password } = req.body;
 
   const user = await User.findOne({ email });

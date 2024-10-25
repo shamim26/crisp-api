@@ -3,8 +3,9 @@ import User from "../../models/user.model";
 import { createJwt } from "../../utils/jwt";
 import { jwtSecret } from "../../constant";
 import asyncHandler from "../../utils/asyncHandler";
+import { Request, Response } from "express";
 
-const registerUser = asyncHandler(async (req, res) => {
+const registerUser = asyncHandler(async (req: Request, res: Response) => {
   const { name, email, password } = req.body;
 
   const existingUser = await User.findOne({ email });

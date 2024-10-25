@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
 import { jwtSecret } from "../constant";
 
+
 const createJwt = (payload, secret, expiresIn = "30m") => {
   try {
     if (!payload || typeof payload !== "object") {

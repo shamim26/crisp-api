@@ -32,7 +32,7 @@ const userSchema = new mongoose.Schema(
         validator: function (val: string) {
           return /(^(\+88|0088)?(01){1}[3456789]{1}(\d){8})$/.test(val);
         },
-        message: (props: any) =>
+        message: (props) =>
           `${props.value} is not a valid Bangladeshi phone number!`,
       },
     },

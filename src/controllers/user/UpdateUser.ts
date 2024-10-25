@@ -1,8 +1,9 @@
+import { Request, Response } from "express";
 import User from "../../models/user.model";
 import asyncHandler from "../../utils/asyncHandler";
 import { errorResponse, successResponse } from "../responseController";
 
-const updateUser = asyncHandler(async (req, res) => {
+const updateUser = asyncHandler(async (req: Request, res: Response) => {
   const { id } = req.params;
   const updates = req.body;
 

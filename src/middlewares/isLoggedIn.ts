@@ -1,8 +1,9 @@
 import { verifyJwt } from "../utils/jwt";
 import { errorResponse } from "../controllers/responseController";
 import User from "../models/user.model";
+import { NextFunction, Request, Response } from "express";
 
-const isLoggedIn = async (req, res, next) => {
+const isLoggedIn = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const token = req.cookies.jwt;
 

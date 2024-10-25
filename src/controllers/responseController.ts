@@ -1,5 +1,7 @@
+import { Response } from "express";
+
 const errorResponse = (
-  res,
+  res: Response,
   { statusCode = 500, message = "Internal Server Error", ...args }
 ) => {
   return res.status(statusCode).json({
@@ -10,7 +12,7 @@ const errorResponse = (
 };
 
 const successResponse = (
-  res,
+  res: Response,
   { statusCode = 200, message = "Success", ...args }
 ) => {
   return res.status(statusCode).json({
