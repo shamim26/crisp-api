@@ -17,6 +17,7 @@ export interface UserDocument {
   address?: Address;
   role: string;
   isBanned: boolean;
+  refreshToken?: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -86,6 +87,9 @@ const userSchema = new mongoose.Schema<UserDocument>(
     isBanned: {
       type: Boolean,
       default: false,
+    },
+    refreshToken: {
+      type: String,
     },
   },
   { timestamps: true }
