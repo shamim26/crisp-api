@@ -1,5 +1,6 @@
 import mongoose, { CallbackError, ValidatorProps } from "mongoose";
 import bcrypt from "bcrypt";
+import  Jwt  from "jsonwebtoken";
 
 interface Address {
   street?: string;
@@ -22,7 +23,12 @@ export interface UserDocument {
   updatedAt: Date;
 }
 
-const userSchema = new mongoose.Schema<UserDocument>(
+interface UserMethods {
+  generateAccessToken: () => string;
+  generateRefreshToken: () => string;
+}
+
+const userSchema = new mongoose.Schema<UserDocument & UserMethods>(
   {
     name: {
       type: String,
@@ -106,6 +112,29 @@ userSchema.pre<UserDocument>("save", async function (next) {
   }
 });
 
-const User = mongoose.model<UserDocument>("User", userSchema);
+// generate tokens
+userSchema.methods.generateAccessToken = function (): string {
+  return Jwt.sign(
+    {
+      _id: this._id,
+      name: this.name,
+      email: this.email,
+    },
+    process.env.ACCESS_TOKEN_SECRET as string,
+    { expiresIn: "1d" }
+  );
+};
+
+userSchema.methods.generateRefreshToken = function (): string {
+  return Jwt.sign(
+    {
+      _id: this._id,
+    },
+    process.env.REFRESH_TOKEN_SECRET as string,
+    { expiresIn: "10d" }
+  );
+};
+
+const User = mongoose.model<UserDocument & UserMethods>("User", userSchema);
 
 export default User;

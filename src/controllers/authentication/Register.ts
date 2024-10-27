@@ -1,9 +1,8 @@
 import { successResponse, errorResponse } from "../responseController";
 import User from "../../models/user.model";
-import { createJwt } from "../../utils/jwt";
-import { jwtSecret } from "../../constant";
 import asyncHandler from "../../utils/asyncHandler";
 import { Request, Response } from "express";
+import { Types } from "mongoose";
 
 const registerUser = asyncHandler(async (req: Request, res: Response) => {
   const { name, email, password } = req.body;
@@ -25,11 +24,28 @@ const registerUser = asyncHandler(async (req: Request, res: Response) => {
     password,
   });
 
-  const createdUser = await User.findById(user._id).select("-password");
+  const tokens = await generateAccessAndRefreshToken(user._id);
 
-  const token = createJwt({ id: user._id }, jwtSecret, "1d");
+  if (!tokens)
+    return errorResponse(res, {
+      statusCode: 500,
+      message: "Failed to generate tokens.",
+    });
 
-  res.cookie("jwt", token, {
+  const { accessToken, refreshToken } = tokens;
+
+  const loggedUser = await User.findById(user._id).select(
+    "-password -refreshToken"
+  );
+
+  res.cookie("accessToken", accessToken, {
+    httpOnly: true,
+    maxAge: 24 * 60 * 60 * 1000,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "none",
+  });
+
+  res.cookie("refreshToken", refreshToken, {
     httpOnly: true,
     maxAge: 24 * 60 * 60 * 1000,
     secure: process.env.NODE_ENV === "production",
@@ -40,17 +56,25 @@ const registerUser = asyncHandler(async (req: Request, res: Response) => {
     statusCode: 200,
     message: "Registered Successfully.",
     payload: {
-      createdUser,
+      user: loggedUser,
+      accessToken,
+      refreshToken,
     },
   });
 });
 
-const generateAccessRefreshToken = async (userId: string) => {
+const generateAccessAndRefreshToken = async (userId: Types.ObjectId) => {
   try {
-    const accessToken = createJwt({ id: userId }, jwtSecret);
-    const refreshToken = createJwt({ id: userId }, jwtSecret);
+    const user = await User.findById(userId);
+    if (!user) throw new Error("User not found");
 
-    
+    const accessToken = user.generateAccessToken();
+    const refreshToken = user.generateRefreshToken();
+
+    user.refreshToken = refreshToken;
+    await user.save({ validateBeforeSave: false });
+
+    return { accessToken, refreshToken };
   } catch (error) {
     console.log("Something went wrong!!", error);
   }

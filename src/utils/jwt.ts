@@ -1,5 +1,4 @@
 import jwt, { JwtPayload } from "jsonwebtoken";
-import { jwtSecret } from "../constant";
 
 const createJwt = (payload: {}, secret: string, expiresIn = "30m") => {
   try {
@@ -14,7 +13,7 @@ const createJwt = (payload: {}, secret: string, expiresIn = "30m") => {
   }
 };
 
-const verifyJwt = (token: string, secret = jwtSecret) => {
+const verifyJwt = (token: string, secret: string) => {
   try {
     if (!token || typeof token !== "string") {
       throw new Error("Invalid token. Must be a non-empty string.");

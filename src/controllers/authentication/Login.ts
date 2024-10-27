@@ -1,9 +1,7 @@
 import User from "../../models/user.model";
-import { createJwt } from "../../utils/jwt";
 import { successResponse, errorResponse } from "../responseController";
 import bcrypt from "bcrypt";
 import asyncHandler from "../../utils/asyncHandler";
-import { jwtSecret } from "../../constant";
 import { Request, Response } from "express";
 
 const loginUser = asyncHandler(async (req: Request, res: Response) => {
@@ -34,14 +32,12 @@ const loginUser = asyncHandler(async (req: Request, res: Response) => {
     });
   }
 
-  const token = createJwt({ id: user._id }, jwtSecret, "1d");
-
-  res.cookie("jwt", token, {
-    httpOnly: true,
-    maxAge: 24 * 60 * 60 * 1000, // 1 day
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "none",
-  });
+  // res.cookie("jwt", token, {
+  //   httpOnly: true,
+  //   maxAge: 24 * 60 * 60 * 1000, // 1 day
+  //   secure: process.env.NODE_ENV === "production",
+  //   sameSite: "none",
+  // });
 
   return successResponse(res, {
     statusCode: 200,

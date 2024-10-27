@@ -3,6 +3,7 @@ import { errorResponse } from "../controllers/responseController";
 import User from "../models/user.model";
 import { NextFunction, Response } from "express";
 import RequestWithUser from "../interfaces/requestWithUser.interface";
+import { ACCESS_TOKEN } from "../constant";
 
 const isLoggedIn = async (
   req: RequestWithUser,
@@ -10,8 +11,8 @@ const isLoggedIn = async (
   next: NextFunction
 ) => {
   try {
-    const token: string = req.cookies.jwt;
-
+    const token: string =
+      req.cookies?.accessToken || req.headers.authorization?.split(" ")[1];
     if (!token) {
       return errorResponse(res, {
         statusCode: 401,
@@ -19,7 +20,7 @@ const isLoggedIn = async (
       });
     }
 
-    const decoded = verifyJwt(token);
+    const decoded = verifyJwt(token, ACCESS_TOKEN);
 
     if (!decoded) {
       return errorResponse(res, {
@@ -28,7 +29,9 @@ const isLoggedIn = async (
       });
     }
 
-    const user = await User.findById(decoded.id).select("-password");
+    const user = await User.findById(decoded._id).select(
+      "-password -refreshToken"
+    );
 
     if (!user) {
       return errorResponse(res, {

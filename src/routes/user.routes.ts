@@ -3,11 +3,13 @@ import registerUser from "../controllers/authentication/Register";
 import isLoggedIn from "../middlewares/isLoggedIn";
 import loginUser from "../controllers/authentication/Login";
 import updateUser from "../controllers/user/UpdateUser";
+import logout from "../controllers/authentication/Logout";
 
 const userRouter = express.Router();
 
-userRouter.post("/register", registerUser);
-userRouter.post("/login", loginUser);
-userRouter.patch("/:id", updateUser);
+userRouter.route("/register").post(registerUser);
+userRouter.route("/login").post(loginUser);
+userRouter.route("/logout").post(isLoggedIn, logout);
+userRouter.route("/:id").patch(updateUser);
 
 export default userRouter;
