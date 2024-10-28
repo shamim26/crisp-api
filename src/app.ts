@@ -13,7 +13,7 @@ const app = express();
 
 const limiterOption = {
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 5, // limit each IP to 100 requests per windowMs
+  max: 10, // limit each IP to 100 requests per windowMs
   message: "Too many requests from this IP, please try again after 15 minutes",
 };
 
@@ -28,7 +28,7 @@ app.use(express.json({ limit: "16kb" }));
 app.use(express.urlencoded({ extended: true, limit: "16kb" }));
 app.use(cookieParser());
 app.use(morgan("dev"));
-app.use(rateLimit(limiterOption));
+// app.use(rateLimit(limiterOption)); TODO: Only in production
 
 // routes
 app.use(`${apiVersion}`, rootRouter);

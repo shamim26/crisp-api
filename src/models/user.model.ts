@@ -1,6 +1,6 @@
 import mongoose, { CallbackError, ValidatorProps } from "mongoose";
 import bcrypt from "bcrypt";
-import  Jwt  from "jsonwebtoken";
+import Jwt from "jsonwebtoken";
 
 interface Address {
   street?: string;
@@ -23,7 +23,7 @@ export interface UserDocument {
   updatedAt: Date;
 }
 
-interface UserMethods {
+export interface UserMethods {
   generateAccessToken: () => string;
   generateRefreshToken: () => string;
 }
@@ -102,8 +102,9 @@ const userSchema = new mongoose.Schema<UserDocument & UserMethods>(
 );
 
 // password hashing
-userSchema.pre<UserDocument>("save", async function (next) {
+userSchema.pre("save", async function (next) {
   try {
+    if (!this.isModified("password")) return next();
     const salt = await bcrypt.genSalt(10);
     this.password = await bcrypt.hash(this.password, salt);
     return next();

@@ -1,20 +1,16 @@
-import { NextFunction, Request, Response } from "express";
+import { Request, Response } from "express";
 import asyncHandler from "../../utils/asyncHandler";
 import User from "../../models/user.model";
 import { successResponse } from "../responseController";
 
 const logout = asyncHandler(
-  async (
-    req: Request & { user?: { _id: string } },
-    res: Response,
-    next: NextFunction
-  ) => {
+  async (req: Request & { user?: { _id: string } }, res: Response) => {
     const id = req.user?._id;
 
     await User.findByIdAndUpdate(
       id,
       {
-        $set: { refreshToken: undefined },
+        $unset: { refreshToken: "" },
       },
       { new: true }
     );
