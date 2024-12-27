@@ -1,4 +1,4 @@
-import mongoose, { CallbackError, ValidatorProps } from "mongoose";
+import mongoose, { CallbackError, Types, ValidatorProps } from "mongoose";
 import bcrypt from "bcrypt";
 import Jwt from "jsonwebtoken";
 
@@ -11,6 +11,7 @@ interface Address {
 }
 
 export interface UserDocument {
+  _id: Types.ObjectId;
   name: string;
   email: string;
   password: string;
@@ -122,7 +123,7 @@ userSchema.methods.generateAccessToken = function (): string {
       email: this.email,
     },
     process.env.ACCESS_TOKEN_SECRET as string,
-    { expiresIn: "1d" }
+    { expiresIn: "4h" }
   );
 };
 

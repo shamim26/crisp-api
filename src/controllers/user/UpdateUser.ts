@@ -1,10 +1,11 @@
-import { Request, Response } from "express";
+import { Response } from "express";
 import User from "../../models/user.model";
 import asyncHandler from "../../utils/asyncHandler";
 import { errorResponse, successResponse } from "../responseController";
+import RequestWithUser from "../../interfaces/requestWithUser.interface";
 
-const updateUser = asyncHandler(async (req: Request, res: Response) => {
-  const { id } = req.params;
+const updateUser = asyncHandler(async (req: RequestWithUser, res: Response) => {
+  const id = req.user?._id; // TODO: add admin level user update
   const updates = req.body;
 
   const user = await User.findById(id);
