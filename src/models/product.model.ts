@@ -35,6 +35,7 @@ const productSchema = new mongoose.Schema(
     brand: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Brand",
+      required: [true, "Brand is required"],
     },
     size: {
       type: [String],
@@ -60,6 +61,10 @@ const productSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "Category",
       required: [true, "Category is required"],
+    },
+    isFeatured: {
+      type: Boolean,
+      default: false,
     },
     isDeleted: {
       type: Boolean,
