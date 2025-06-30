@@ -8,6 +8,8 @@ import categoryRouter from "./routes/category.routes";
 import productRouter from "./routes/product.routes";
 import morgan from "morgan";
 import rateLimit from "express-rate-limit";
+import suggestionRouter from "./routes/suggestion.routes";
+import syncJob from "./jobs/syncJob";
 
 const app = express();
 
@@ -35,5 +37,9 @@ app.use(`${apiVersion}`, rootRouter);
 app.use(`${apiVersion}/users`, userRouter);
 app.use(`${apiVersion}/categories`, categoryRouter);
 app.use(`${apiVersion}/products`, productRouter);
+app.use(`${apiVersion}/suggestions`, suggestionRouter);
+
+// sync job
+// syncJob();
 
 export { app };

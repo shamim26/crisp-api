@@ -37,9 +37,13 @@ const productSchema = new mongoose.Schema(
       ref: "Brand",
       required: [true, "Brand is required"],
     },
-    size: {
-      type: [String],
-      required: [true, "Size is required"],
+    specifications: {
+      type: [
+        {
+          key: String,
+          value: String,
+        },
+      ],
     },
     colors: {
       type: [String],
@@ -51,10 +55,10 @@ const productSchema = new mongoose.Schema(
       min: [0, "Price cannot be negative"],
       default: 1000,
     },
-    quantity: {
+    stock: {
       type: Number,
-      required: [true, "Quantity is required"],
-      min: [0, "Quantity cannot be negative"],
+      required: [true, "Stock is required"],
+      min: [0, "Stock cannot be negative"],
       default: 1,
     },
     category: {
