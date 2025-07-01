@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import asyncHandler from "../../utils/asyncHandler";
 import Product from "../../models/product.model";
 import { successResponse } from "../responseController";
+import generateSlug from "../../utils/generateSlug";
 
 const CreateProduct = asyncHandler(async (req: Request, res: Response) => {
   const {
@@ -10,24 +11,34 @@ const CreateProduct = asyncHandler(async (req: Request, res: Response) => {
     price,
     category,
     stock,
-    images,
-    featuredImage,
-    size,
     colors,
-    quantity,
+    brand,
+    specifications,
+    keyFeatures,
+    offerPrice,
+    warranty,
   } = req.body;
+
+  const images = (req as any).uploadedImages;
+  const featuredImage = (req as any).uploadedFeaturedImage;
+
+  const slug = generateSlug(name);
 
   const productData = {
     name,
+    slug,
     description,
     price,
     category,
     stock,
     images,
     featuredImage,
-    size,
     colors,
-    quantity,
+    brand,
+    specifications,
+    keyFeatures,
+    offerPrice,
+    warranty,
   };
 
   const newProduct = await Product.create(productData);

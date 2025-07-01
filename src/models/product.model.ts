@@ -35,7 +35,10 @@ const productSchema = new mongoose.Schema(
     brand: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Brand",
-      required: [true, "Brand is required"],
+    },
+    category: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Category",
     },
     specifications: {
       type: [
@@ -45,15 +48,24 @@ const productSchema = new mongoose.Schema(
         },
       ],
     },
+    slug: {
+      type: String,
+      required: [true, "Slug is required"],
+      unique: true,
+    },
     colors: {
       type: [String],
-      required: [true, "Colors are required"],
+    },
+    keyFeatures: {
+      type: [String],
     },
     price: {
       type: Number,
       required: [true, "Price is required"],
       min: [0, "Price cannot be negative"],
-      default: 1000,
+    },
+    offerPrice: {
+      type: Number,
     },
     stock: {
       type: Number,
@@ -61,11 +73,10 @@ const productSchema = new mongoose.Schema(
       min: [0, "Stock cannot be negative"],
       default: 1,
     },
-    category: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Category",
-      required: [true, "Category is required"],
+    warranty: {
+      type: String,
     },
+
     isFeatured: {
       type: Boolean,
       default: false,
