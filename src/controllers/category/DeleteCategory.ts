@@ -1,25 +1,24 @@
 import { Request, Response } from "express";
-import Product from "../../models/product.model";
 import asyncHandler from "../../utils/asyncHandler";
+import Category from "../../models/category.model";
 import { errorResponse, successResponse } from "../responseController";
-
-const GetProduct = asyncHandler(async (req: Request, res: Response) => {
+const DeleteCategory = asyncHandler(async (req: Request, res: Response) => {
   const { id } = req.params;
 
-  const product = await Product.findById(id);
+  const category = await Category.findByIdAndDelete(id);
 
-  if (!product) {
+  if (!category) {
     return errorResponse(res, {
       statusCode: 404,
-      message: "Product not found",
+      message: "Category not found",
     });
   }
 
   return successResponse(res, {
     statusCode: 200,
-    message: "Product fetched successfully",
-    payload: product,
+    message: "Category deleted successfully",
+    category,
   });
 });
 
-export default GetProduct;
+export default DeleteCategory;

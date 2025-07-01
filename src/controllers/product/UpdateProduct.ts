@@ -15,7 +15,7 @@ const UpdateProduct = asyncHandler(async (req: Request, res: Response) => {
     });
   }
 
-  successResponse(res, {
+  return successResponse(res, {
     statusCode: 200,
     message: "Product updated successfully",
     payload: product,

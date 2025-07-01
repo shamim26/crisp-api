@@ -31,7 +31,7 @@ const GetAllProducts = asyncHandler(async (req: Request, res: Response) => {
 
   const total = await Product.countDocuments(filter);
 
-  successResponse(res, {
+  return successResponse(res, {
     statusCode: 200,
     message: "Products fetched successfully",
     payload: {
