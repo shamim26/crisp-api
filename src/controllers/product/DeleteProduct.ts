@@ -2,7 +2,6 @@ import { Request, Response } from "express";
 import asyncHandler from "../../utils/asyncHandler";
 import Product from "../../models/product.model";
 import { errorResponse, successResponse } from "../responseController";
-import exp from "constants";
 
 const DeleteProduct = asyncHandler(async (req: Request, res: Response) => {
   const { id } = req.params;
