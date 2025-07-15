@@ -41,12 +41,8 @@ const productSchema = new mongoose.Schema(
       ref: "Category",
     },
     specifications: {
-      type: [
-        {
-          key: String,
-          value: String,
-        },
-      ],
+      type: mongoose.Schema.Types.Mixed,
+      default: {},
     },
     slug: {
       type: String,

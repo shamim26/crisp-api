@@ -10,7 +10,8 @@ import morgan from "morgan";
 import rateLimit from "express-rate-limit";
 import suggestionRouter from "./routes/suggestion.routes";
 import syncJob from "./jobs/syncJob";
-
+import dataImport from "./utils/dataImport";
+import genText from "./utils/aiTextGenerator";
 const app = express();
 
 const limiterOption = {
@@ -39,7 +40,16 @@ app.use(`${apiVersion}/categories`, categoryRouter);
 app.use(`${apiVersion}/products`, productRouter);
 app.use(`${apiVersion}/suggestions`, suggestionRouter);
 
+app.route(`${apiVersion}/ai`).post(async (req, res) => {
+  const prompt = req.body.prompt;
+  const text = await genText(prompt);
+  res.status(200).json({ text });
+});
+
 // sync job
 // syncJob();
+
+// data import
+// dataImport();
 
 export { app };
