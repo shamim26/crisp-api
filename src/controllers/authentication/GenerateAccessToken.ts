@@ -53,15 +53,15 @@ const generateAccessToken = asyncHandler(
 
     res.cookie("accessToken", tokens.accessToken, {
       httpOnly: true,
-      maxAge: 1 * 24 * 60 * 60 * 1000,
-      secure: process.env.NODE_ENV === "production",
+      maxAge: 4 * 60 * 60 * 1000, // 4 hours to match JWT expiry
+      secure: true,
       sameSite: "none",
     });
 
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
-      maxAge: 10 * 24 * 60 * 60 * 1000,
-      secure: process.env.NODE_ENV === "production",
+      maxAge: 10 * 24 * 60 * 60 * 1000, // 10 days to match JWT expiry
+      secure: true,
       sameSite: "none",
     });
 

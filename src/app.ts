@@ -27,8 +27,8 @@ app.use(
     credentials: true,
   })
 );
-app.use(express.json({ limit: "16kb" }));
-app.use(express.urlencoded({ extended: true, limit: "16kb" }));
+app.use(express.json({ limit: "10mb" }));
+app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 app.use(cookieParser());
 app.use(morgan("dev"));
 // app.use(rateLimit(limiterOption)); TODO: Only in production
