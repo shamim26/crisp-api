@@ -14,14 +14,16 @@ const GetAllProducts = asyncHandler(async (req: Request, res: Response) => {
 
   if (search) {
     filter = {
-      $or: [
-        { name: { $regex: search, $options: "i" } },
-        { description: { $regex: search, $options: "i" } },
-      ],
+      $or: [{ name: { $regex: search, $options: "i" } }],
     };
   }
 
-  const products = await Product.find(filter).skip(skip).limit(limit);
+  const products = await Product.find(filter)
+    .skip(skip)
+    .limit(limit)
+    .sort()
+    .populate("category brand");
+
   if (!products) {
     return errorResponse(res, {
       statusCode: 404,

@@ -12,7 +12,7 @@ const upload = multer({
 
 const imageUploadMiddleware = [
   upload.fields([
-    { name: "images", maxCount: 5 }, // up to 5 images
+    { name: "images", maxCount: 4 }, // up to 4 images
     { name: "featuredImage", maxCount: 1 }, // only 1 featured image
   ]),
   async (req: Request, res: Response, next: NextFunction) => {
