@@ -20,11 +20,10 @@ const variantSchema = new Schema({
     min: [0, "Stock cannot be negative"],
     default: 0,
   },
-  // Example: [{ option_name: 'Color', option_value: 'Space Gray' }, { option_name: 'Storage', option_value: '512GB' }]
   options: [
     {
-      option_name: { type: String, required: true },
-      option_value: { type: String, required: true },
+      name: { type: String, required: true },
+      values: [{ type: String, required: true }],
     },
   ],
 });
@@ -63,28 +62,19 @@ const productSchema = new Schema(
     tags: [String],
 
     // --- Media ---
-    featuredImage: {
-      type: String,
-      required: [true, "Featured image is required"],
-      validate: {
-        validator: function (v: string) {
-          return /^https?:\/\/.+\.(jpg|jpeg|png|gif)$/i.test(v);
+    images: [
+      {
+        type: String,
+        required: [true, "Image URL is required"],
+        validate: {
+          validator: function (v: string) {
+            return /^https?:\/\/.+\.(jpg|jpeg|png|gif|bmp|webp|svg)$/i.test(v);
+          },
+          message: (props: ValidatorProps) =>
+            `${props.value} is not a valid image URL!`,
         },
-        message: (props: ValidatorProps) =>
-          `${props.value} is not a valid image URL!`,
       },
-    },
-    images: {
-      type: [String],
-      validate: {
-        validator: function (v: string[]) {
-          return v.every((url) =>
-            /^https?:\/\/.+\.(jpg|jpeg|png|gif)$/i.test(url)
-          );
-        },
-        message: () => `All image URLs must be valid!`,
-      },
-    },
+    ],
     // --- Pricing (Base pricing info) ---
     pricing: {
       // This price can be a baseline, but the variant price is what's used for purchase
