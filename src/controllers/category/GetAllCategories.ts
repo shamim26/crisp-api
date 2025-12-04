@@ -9,9 +9,14 @@ const GetAllCategories = asyncHandler(async (req: Request, res: Response) => {
   const skip = (page - 1) * limit;
   const search = req.query.search as string;
 
-  const categories = await Category.find({
-    name: { $regex: search, $options: "i" },
-  })
+
+  let filter = {};
+
+  if (search) {
+    filter = { name: { $regex: search, $options: "i" } };
+  }
+
+  const categories = await Category.find(filter)
     .skip(skip)
     .limit(limit)
     .sort({ createdAt: -1 });
