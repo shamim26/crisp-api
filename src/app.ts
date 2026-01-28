@@ -35,7 +35,7 @@ const limiterOption = {
 // middlewares
 app.use(
   cors({
-    origin: process.env.CLIENT_URL,
+    origin: process.env.CORS_ORIGIN,
     credentials: true,
   })
 );
@@ -67,4 +67,4 @@ app.route(`/api/v1/ai`).post(async (req, res) => {
 // data import
 // dataImport();
 
-export { app };
+export { app, httpServer };
