@@ -1,18 +1,30 @@
 import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
-import { apiVersion } from "./constant";
-import rootRouter from "./routes/root.routes";
-import userRouter from "./routes/user.routes";
-import categoryRouter from "./routes/category.routes";
-import productRouter from "./routes/product.routes";
 import morgan from "morgan";
 import rateLimit from "express-rate-limit";
+import { createServer } from "http";
+import { initSocket } from "./utils/socket";
+
+// Routes Import
+// Routes Import
+import productRouter from "./routes/product.routes";
+import categoryRouter from "./routes/category.routes";
+// import authRouter from "./routes/auth.routes"; // Missing
+import userRouter from "./routes/user.routes";
+// import brandRouter from "./routes/brand.routes"; // Missing
 import suggestionRouter from "./routes/suggestion.routes";
+// import dashboardRouter from "./routes/dashboard.routes"; // Missing
+import orderRouter from "./routes/order.routes";
+
 import syncJob from "./jobs/syncJob";
 import dataImport from "./utils/dataImport";
 import genText from "./utils/aiTextGenerator";
+
 const app = express();
+
+const httpServer = createServer(app);
+initSocket(httpServer);
 
 const limiterOption = {
   windowMs: 15 * 60 * 1000, // 15 minutes
@@ -23,24 +35,27 @@ const limiterOption = {
 // middlewares
 app.use(
   cors({
-    origin: process.env.CORS_ORIGIN || "http://localhost:3000",
+    origin: process.env.CLIENT_URL,
     credentials: true,
   })
 );
-app.use(express.json({ limit: "10mb" }));
-app.use(express.urlencoded({ extended: true, limit: "10mb" }));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(morgan("dev"));
 // app.use(rateLimit(limiterOption)); TODO: Only in production
 
 // routes
-app.use(`${apiVersion}`, rootRouter);
-app.use(`${apiVersion}/users`, userRouter);
-app.use(`${apiVersion}/categories`, categoryRouter);
-app.use(`${apiVersion}/products`, productRouter);
-app.use(`${apiVersion}/suggestions`, suggestionRouter);
+app.use("/api/v1/products", productRouter);
+app.use("/api/v1/categories", categoryRouter);
+// app.use("/api/v1/auth", authRouter);
+app.use("/api/v1/users", userRouter);
+// app.use("/api/v1/brands", brandRouter);
+app.use("/api/v1/suggestions", suggestionRouter);
+// app.use("/dashboard", dashboardRouter);
+app.use("/api/v1/orders", orderRouter);
 
-app.route(`${apiVersion}/ai`).post(async (req, res) => {
+app.route(`/api/v1/ai`).post(async (req, res) => {
   const prompt = req.body.prompt;
   const text = await genText(prompt);
   res.status(200).json({ text });
