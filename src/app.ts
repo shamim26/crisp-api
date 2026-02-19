@@ -21,6 +21,7 @@ import syncJob from "./jobs/syncJob";
 import dataImport from "./utils/dataImport";
 import genText from "./utils/aiTextGenerator";
 import rootRouter from "./routes/root.routes";
+import inventoryRouter from "./routes/inventory.routes";
 
 const app = express();
 
@@ -59,6 +60,7 @@ app.use("/api/v1/users", userRouter);
 app.use("/api/v1/suggestions", suggestionRouter);
 // app.use("/dashboard", dashboardRouter);
 app.use("/api/v1/orders", orderRouter);
+app.use("/api/v1/inventory", inventoryRouter);
 
 app.route(`/api/v1/ai`).post(async (req, res) => {
   const prompt = req.body.prompt;
