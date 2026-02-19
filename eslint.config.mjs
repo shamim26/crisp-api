@@ -26,6 +26,12 @@ export default tseslint.config(
       "no-undef": "off",
       "no-unused-labels": "warn",
       "no-useless-catch": "warn",
+      "no-empty": "warn",
+      "no-unsafe-optional-chaining": "warn",
+    },
+    languageOptions: {
+      ecmaVersion: 2020,
+      sourceType: "module",
     },
   }
 );
