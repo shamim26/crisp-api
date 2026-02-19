@@ -20,8 +20,12 @@ import orderRouter from "./routes/order.routes";
 import syncJob from "./jobs/syncJob";
 import dataImport from "./utils/dataImport";
 import genText from "./utils/aiTextGenerator";
+import rootRouter from "./routes/root.routes";
 
 const app = express();
+
+// Required for rate limiting to work behind proxies (like Render, Heroku, Nginx)
+app.set("trust proxy", 1);
 
 const httpServer = createServer(app);
 initSocket(httpServer);
@@ -43,9 +47,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(morgan("dev"));
-// app.use(rateLimit(limiterOption)); TODO: Only in production
+app.use(rateLimit(limiterOption));
 
 // routes
+app.use("/api/v1", rootRouter);
 app.use("/api/v1/products", productRouter);
 app.use("/api/v1/categories", categoryRouter);
 // app.use("/api/v1/auth", authRouter);
