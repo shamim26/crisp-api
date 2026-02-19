@@ -50,7 +50,7 @@ const dataImport = async () => {
               typeof value === "string" ? value.replace(/[^\d]/g, "") : "";
             const numericPrice = parseInt(clean, 10);
             product.price = isNaN(numericPrice) ? 0 : numericPrice;
-          } 
+          }
         } else {
           specifications[key] = value?.toString() ?? "";
         }

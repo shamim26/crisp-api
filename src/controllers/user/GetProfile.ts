@@ -6,7 +6,9 @@ import User, { UserDocument } from "../../models/user.model";
 
 const getProfile = asyncHandler(async (req: RequestWithUser, res: Response) => {
   const user = req.user as UserDocument;
-  const userData = await User.findById(user._id).select("-password -refreshToken");
+  const userData = await User.findById(user._id).select(
+    "-password -refreshToken"
+  );
 
   if (!userData) {
     return errorResponse(res, {

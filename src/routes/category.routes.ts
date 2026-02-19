@@ -5,7 +5,7 @@ import isLoggedIn from "../middlewares/isLoggedIn";
 import isAdmin from "../middlewares/isAdmin";
 import DeleteCategory from "../controllers/category/DeleteCategory";
 import UpdateCategory from "../controllers/category/UpdateCategory";
-import GetAllCategories from "../controllers/category/GetAllCategories";    
+import GetAllCategories from "../controllers/category/GetAllCategories";
 
 const categoryRouter = express.Router();
 

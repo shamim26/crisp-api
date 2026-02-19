@@ -9,7 +9,6 @@ const GetAllCategories = asyncHandler(async (req: Request, res: Response) => {
   const skip = (page - 1) * limit;
   const search = req.query.search as string;
 
-
   let filter = {};
 
   if (search) {

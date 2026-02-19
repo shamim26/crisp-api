@@ -2,43 +2,56 @@ import { Request, Response } from "express";
 import asyncHandler from "../../utils/asyncHandler";
 import Product from "../../models/product.model";
 import { successResponse } from "../responseController";
-import generateSlug from "../../utils/generateSlug";
+import { generateSlug } from "../../helper/generateSlug";
 
 const CreateProduct = asyncHandler(async (req: Request, res: Response) => {
-  const {
+  // 1. Extract images from middleware
+  const uploadedImages = (req as any).uploadedImages || [];
+  const uploadedFeaturedImage = (req as any).uploadedFeaturedImage || "";
+
+  let {
     name,
     description,
-    price,
     category,
-    stock,
-    colors,
     brand,
+    pricing,
+    variants,
     specifications,
-    keyFeatures,
-    offerPrice,
-    warranty,
+    seo,
+    isFeatured,
   } = req.body;
 
-  const images = (req as any).uploadedImages;
-  const featuredImage = (req as any).uploadedFeaturedImage;
+  // JSON parsing helper
+  const parseJSON = (field: any) => {
+    if (typeof field === "string") {
+      try {
+        return JSON.parse(field);
+      } catch (e) {
+        return field;
+      }
+    }
+    return field;
+  };
 
-  const slug = generateSlug(name);
+  pricing = parseJSON(pricing);
+  variants = parseJSON(variants);
+  specifications = parseJSON(specifications);
+  seo = parseJSON(seo);
 
+  // 3. Construct product data matching Model
   const productData = {
     name,
-    slug,
+    slug: generateSlug(name),
     description,
-    price,
     category,
-    stock,
-    images,
-    featuredImage,
-    colors,
     brand,
+    pricing,
+    variants,
     specifications,
-    keyFeatures,
-    offerPrice,
-    warranty,
+    images: uploadedImages,
+    featuredImage: uploadedFeaturedImage,
+    seo,
+    isFeatured: isFeatured === "true" || isFeatured === true,
   };
 
   const newProduct = await Product.create(productData);
@@ -46,7 +59,7 @@ const CreateProduct = asyncHandler(async (req: Request, res: Response) => {
   return successResponse(res, {
     statusCode: 201,
     message: "Product created successfully",
-    product: newProduct,
+    payload: newProduct,
   });
 });
 

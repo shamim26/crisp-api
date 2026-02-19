@@ -4,7 +4,6 @@ import { errorResponse, successResponse } from "../responseController";
 import asyncHandler from "../../utils/asyncHandler";
 import { io } from "../../utils/socket";
 
-
 // Bulk Update Status
 export const bulkUpdateStatus = asyncHandler(
   async (req: Request, res: Response) => {

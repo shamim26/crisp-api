@@ -17,6 +17,9 @@ userRouter.route("/login").post(loginUser);
 userRouter.route("/guest-login").post(guestLogin);
 userRouter.route("/logout").post(isLoggedIn, logout);
 userRouter.route("/refresh-token").post(generateAccessToken);
-userRouter.route("/").get(isLoggedIn, getProfile).patch(isLoggedIn, blockGuest, updateUser);
+userRouter
+  .route("/")
+  .get(isLoggedIn, getProfile)
+  .patch(isLoggedIn, blockGuest, updateUser);
 
 export default userRouter;
